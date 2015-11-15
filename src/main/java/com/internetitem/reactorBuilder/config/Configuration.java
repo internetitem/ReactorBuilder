@@ -24,17 +24,17 @@ public class Configuration {
 	private String outputFile;
 
 	public Configuration(KeyedOptions options) throws ConfigurationException {
-		this.xmlns = getOptionalOption(options, "xmlns", xmlns);
-		this.templateFile = getOptionalOption(options, "templateFile", templateFile);
-		this.templateUrl = getOptionalOption(options, "templateUrl", templateUrl);
-		this.groupId = getRequiredOption(options, "groupId");
-		this.artifactId = getRequiredOption(options, "artifactId");
-		this.version = getRequiredOption(options, "version");
-		this.packaging = getOptionalOption(options, "packaging", packaging);
+		this.xmlns = getOption(options, "xmlns", xmlns);
+		this.templateFile = getOption(options, "templateFile", templateFile);
+		this.templateUrl = getOption(options, "templateUrl", templateUrl);
+		this.groupId = getOption(options, "groupId", null);
+		this.artifactId = getOption(options, "artifactId", null);
+		this.version = getOption(options, "version", null);
+		this.packaging = getOption(options, "packaging", packaging);
 		this.prependModules = getOptionList(options, "prependModules");
 		this.appendModules = getOptionList(options, "appendModules");
 		this.moduleDirectories = getOptionList(options, "moduleDirectories");
-		this.outputFile = getOptionalOption(options, "outputFile", outputFile);
+		this.outputFile = getOption(options, "outputFile", outputFile);
 	}
 
 	private List<String> getOptionList(KeyedOptions options, String key) {
@@ -45,18 +45,10 @@ public class Configuration {
 		return values;
 	}
 
-	private String getOptionalOption(KeyedOptions options, String key, String defaultValue) {
+	private String getOption(KeyedOptions options, String key, String defaultValue) {
 		String value = options.getFirstValue(key);
 		if (value == null) {
 			return defaultValue;
-		}
-		return value;
-	}
-
-	private String getRequiredOption(KeyedOptions options, String key) throws ConfigurationException {
-		String value = options.getFirstValue(key);
-		if (value == null) {
-			throw new ConfigurationException("Required option " + key + " missing");
 		}
 		return value;
 	}

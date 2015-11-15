@@ -113,28 +113,4 @@ public class ConfigurationTest {
 		assertEquals("md3", moduleDirectories.get(2));
 	}
 
-	@Test(expected = ConfigurationException.class)
-	public void testRequiredGroupId() throws ConfigurationException {
-		KeyedOptions options = new KeyedOptions();
-		options.addValue("artifactId", "ai");
-		options.addValue("version", "ver");
-		new Configuration(options);
-	}
-
-	@Test(expected = ConfigurationException.class)
-	public void testRequiredArtifactId() throws ConfigurationException {
-		KeyedOptions options = new KeyedOptions();
-		options.addValue("groupId", "gi");
-		options.addValue("version", "ver");
-		new Configuration(options);
-	}
-
-	@Test(expected = ConfigurationException.class)
-	public void testRequiredVersion() throws ConfigurationException {
-		KeyedOptions options = new KeyedOptions();
-		options.addValue("groupId", "gi");
-		options.addValue("artifactId", "ai");
-		new Configuration(options);
-	}
-
 }
