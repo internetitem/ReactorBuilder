@@ -50,7 +50,6 @@ public class ConfigurationTest {
 
 		assertEquals("XML Rules!", config.getXmlns());
 		assertEquals("tf", config.getTemplateFile());
-		assertEquals("tu", config.getTemplateUrl());
 		assertEquals("gi", config.getGroupId());
 		assertEquals("ai", config.getArtifactId());
 		assertEquals("ver", config.getVersion());

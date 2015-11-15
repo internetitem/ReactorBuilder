@@ -10,7 +10,6 @@ public class Configuration {
 	private String xmlns = "http://maven.apache.org/POM/4.0.0";
 
 	private String templateFile;
-	private String templateUrl;
 	private String groupId;
 	private String artifactId;
 	private String version;
@@ -26,7 +25,6 @@ public class Configuration {
 	public Configuration(KeyedOptions options) throws ConfigurationException {
 		this.xmlns = getOption(options, "xmlns", xmlns);
 		this.templateFile = getOption(options, "templateFile", templateFile);
-		this.templateUrl = getOption(options, "templateUrl", templateUrl);
 		this.groupId = getOption(options, "groupId", null);
 		this.artifactId = getOption(options, "artifactId", null);
 		this.version = getOption(options, "version", null);
@@ -59,10 +57,6 @@ public class Configuration {
 
 	public String getTemplateFile() {
 		return templateFile;
-	}
-
-	public String getTemplateUrl() {
-		return templateUrl;
 	}
 
 	public String getGroupId() {
