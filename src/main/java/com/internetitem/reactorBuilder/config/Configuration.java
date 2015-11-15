@@ -1,12 +1,11 @@
 package com.internetitem.reactorBuilder.config;
 
-import com.internetitem.reactorBuilder.config.exception.ConfigurationException;
-
 import java.util.Collections;
 import java.util.List;
 
 public class Configuration {
 
+	public static final String[] LIST_OPTION_NAMES = {"prependModules", "appendModules", "moduleDirectories"};
 	private String xmlns = "http://maven.apache.org/POM/4.0.0";
 
 	private String templateFile;
@@ -15,14 +14,17 @@ public class Configuration {
 	private String version;
 	private String packaging = "pom";
 
-	private List<String> prependModules;
-	private List<String> appendModules;
+	private List<String> prependModules = Collections.emptyList();
+	private List<String> appendModules = Collections.emptyList();
 
-	private List<String> moduleDirectories;
+	private List<String> moduleDirectories = Collections.emptyList();
 
 	private String outputFile;
 
-	public Configuration(KeyedOptions options) throws ConfigurationException {
+	public Configuration() {
+	}
+
+	public Configuration(KeyedOptions options) {
 		this.xmlns = getOption(options, "xmlns", xmlns);
 		this.templateFile = getOption(options, "templateFile", templateFile);
 		this.groupId = getOption(options, "groupId", null);
@@ -55,39 +57,79 @@ public class Configuration {
 		return xmlns;
 	}
 
+	public void setXmlns(String xmlns) {
+		this.xmlns = xmlns;
+	}
+
 	public String getTemplateFile() {
 		return templateFile;
+	}
+
+	public void setTemplateFile(String templateFile) {
+		this.templateFile = templateFile;
 	}
 
 	public String getGroupId() {
 		return groupId;
 	}
 
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
 	public String getArtifactId() {
 		return artifactId;
+	}
+
+	public void setArtifactId(String artifactId) {
+		this.artifactId = artifactId;
 	}
 
 	public String getVersion() {
 		return version;
 	}
 
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 	public String getPackaging() {
 		return packaging;
+	}
+
+	public void setPackaging(String packaging) {
+		this.packaging = packaging;
 	}
 
 	public List<String> getPrependModules() {
 		return prependModules;
 	}
 
+	public void setPrependModules(List<String> prependModules) {
+		this.prependModules = prependModules;
+	}
+
 	public List<String> getAppendModules() {
 		return appendModules;
+	}
+
+	public void setAppendModules(List<String> appendModules) {
+		this.appendModules = appendModules;
 	}
 
 	public List<String> getModuleDirectories() {
 		return moduleDirectories;
 	}
 
+	public void setModuleDirectories(List<String> moduleDirectories) {
+		this.moduleDirectories = moduleDirectories;
+	}
+
 	public String getOutputFile() {
 		return outputFile;
+	}
+
+	public void setOutputFile(String outputFile) {
+		this.outputFile = outputFile;
 	}
 }

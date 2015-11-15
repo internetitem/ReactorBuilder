@@ -1,16 +1,16 @@
 package com.internetitem.reactorBuilder.config;
 
-import com.internetitem.reactorBuilder.config.exception.ConfigurationException;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ConfigurationTest {
 
 	@Test
-	public void testBasicConfiguration() throws ConfigurationException {
+	public void testBasicConfiguration() {
 		KeyedOptions options = new KeyedOptions();
 		options.addValue("groupId", "group");
 		options.addValue("artifactId", "test");
@@ -33,7 +33,7 @@ public class ConfigurationTest {
 	}
 
 	@Test
-	public void testFullConfiguration() throws ConfigurationException {
+	public void testFullConfiguration() {
 		KeyedOptions options = new KeyedOptions();
 		options.addValue("xmlns", "XML Rules!");
 		options.addValue("templateFile", "tf");
@@ -74,7 +74,7 @@ public class ConfigurationTest {
 	}
 
 	@Test
-	public void testConfigurationWithMultipleOptions() throws ConfigurationException {
+	public void testConfigurationWithMultipleOptions() {
 		KeyedOptions options = new KeyedOptions();
 		options.addValue("groupId", "gi");
 		options.addValue("artifactId", "ai");

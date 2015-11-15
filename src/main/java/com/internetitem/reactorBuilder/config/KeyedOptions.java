@@ -1,9 +1,6 @@
 package com.internetitem.reactorBuilder.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class KeyedOptions {
 
@@ -23,7 +20,11 @@ public class KeyedOptions {
 	}
 
 	public List<String> getValues(String key) {
-		return options.get(key);
+		List<String> values = options.get(key);
+		if (values == null) {
+			return null;
+		}
+		return Collections.unmodifiableList(values);
 	}
 
 	public String getFirstValue(String key) {
@@ -47,6 +48,7 @@ public class KeyedOptions {
 		if (value == null || value.isEmpty()) {
 			return true;
 		}
+		//noinspection RedundantIfStatement
 		if (value.equals("false")) {
 			return false;
 		}
