@@ -42,9 +42,9 @@ public class ConfigurationTest {
 		options.addValue("artifactId", "ai");
 		options.addValue("version", "ver");
 		options.addValue("packaging", "pkg");
-		options.addValue("prependModules", "pm");
-		options.addValue("appendModules", "am");
-		options.addValue("moduleDirectories", "md");
+		options.addValue("prependModule", "pm");
+		options.addValue("appendModule", "am");
+		options.addValue("moduleDirectory", "md");
 		options.addValue("outputFile", "of");
 		Configuration config = new Configuration(options);
 
@@ -79,15 +79,15 @@ public class ConfigurationTest {
 		options.addValue("groupId", "gi");
 		options.addValue("artifactId", "ai");
 		options.addValue("version", "ver");
-		options.addValue("prependModules", "pm1");
-		options.addValue("prependModules", "pm2");
-		options.addValue("prependModules", "pm3");
-		options.addValue("appendModules", "am1");
-		options.addValue("appendModules", "am2");
-		options.addValue("appendModules", "am3");
-		options.addValue("moduleDirectories", "md1");
-		options.addValue("moduleDirectories", "md2");
-		options.addValue("moduleDirectories", "md3");
+		options.addValue("prependModule", "pm1");
+		options.addValue("prependModule", "pm2");
+		options.addValue("prependModule", "pm3");
+		options.addValue("appendModule", "am1");
+		options.addValue("appendModule", "am2");
+		options.addValue("appendModule", "am3");
+		options.addValue("moduleDirectory", "md1");
+		options.addValue("moduleDirectory", "md2");
+		options.addValue("moduleDirectory", "md3");
 		Configuration config = new Configuration(options);
 
 		List<String> prependModules = config.getPrependModules();

@@ -33,7 +33,7 @@ public class ReactorBuilderTest {
 		config.setTemplateFile("/dir/pom.xml");
 		String xml = builder.loadResource("/test-pom.xml");
 		mockInputter.addData("/dir/pom.xml", xml);
-		mockLister.addDirectory("", "module1", "module2");
+		mockLister.addDirectory(".", "module1", "module2");
 		config.setOutputFile("/out/pom.xml");
 
 		builder.buildReactorProject(config);
@@ -287,7 +287,7 @@ public class ReactorBuilderTest {
 		MockInputter mockInputter = new MockInputter();
 		MockOutputter mockOutputter = new MockOutputter();
 		MockModuleLister mockLister = new MockModuleLister();
-		mockLister.addDirectory("", "module1", "module2");
+		mockLister.addDirectory(".", "module1", "module2");
 		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
 		Configuration config = new Configuration();
 		List<String> modules = builder.getModules(config);

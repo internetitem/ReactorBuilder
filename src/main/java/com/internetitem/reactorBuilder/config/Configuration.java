@@ -31,9 +31,9 @@ public class Configuration {
 		this.artifactId = getOption(options, "artifactId", null);
 		this.version = getOption(options, "version", null);
 		this.packaging = getOption(options, "packaging", packaging);
-		this.prependModules = getOptionList(options, "prependModules");
-		this.appendModules = getOptionList(options, "appendModules");
-		this.moduleDirectories = getOptionList(options, "moduleDirectories");
+		this.prependModules = getOptionList(options, "prependModule");
+		this.appendModules = getOptionList(options, "appendModule");
+		this.moduleDirectories = getOptionList(options, "moduleDirectory");
 		this.outputFile = getOption(options, "outputFile", outputFile);
 	}
 

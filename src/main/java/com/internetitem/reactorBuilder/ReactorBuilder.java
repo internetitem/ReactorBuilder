@@ -132,7 +132,7 @@ public class ReactorBuilder {
 		List<String> moduleDirectories = config.getModuleDirectories();
 		List<String> allModules = new ArrayList<>();
 		if (moduleDirectories == null || moduleDirectories.isEmpty()) {
-			return lister.listModules("");
+			return lister.listModules(".");
 		}
 		for (String moduleDirectory : moduleDirectories) {
 			allModules.addAll(lister.listModules(moduleDirectory));
