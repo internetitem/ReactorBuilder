@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Configuration {
 
-	public static final String[] LIST_OPTION_NAMES = {"prependModules", "appendModules", "moduleDirectories"};
+	public static final String[] LIST_OPTION_NAMES = {"prependModules", "appendModules", "moduleSearchDirectories"};
 	private String xmlns = "http://maven.apache.org/POM/4.0.0";
 
 	private String templateFile;
@@ -17,7 +17,8 @@ public class Configuration {
 	private List<String> prependModules = Collections.emptyList();
 	private List<String> appendModules = Collections.emptyList();
 
-	private List<String> moduleDirectories = Collections.emptyList();
+	private String relativeTo;
+	private List<String> moduleSearchDirectories = Collections.emptyList();
 
 	private String outputFile;
 
@@ -27,13 +28,14 @@ public class Configuration {
 	public Configuration(KeyedOptions options) {
 		this.xmlns = getOption(options, "xmlns", xmlns);
 		this.templateFile = getOption(options, "templateFile", templateFile);
-		this.groupId = getOption(options, "groupId", null);
-		this.artifactId = getOption(options, "artifactId", null);
-		this.version = getOption(options, "version", null);
+		this.groupId = getOption(options, "groupId", groupId);
+		this.artifactId = getOption(options, "artifactId", artifactId);
+		this.version = getOption(options, "version", version);
 		this.packaging = getOption(options, "packaging", packaging);
 		this.prependModules = getOptionList(options, "prependModule");
 		this.appendModules = getOptionList(options, "appendModule");
-		this.moduleDirectories = getOptionList(options, "moduleDirectory");
+		this.relativeTo = getOption(options, "relativeTo", relativeTo);
+		this.moduleSearchDirectories = getOptionList(options, "moduleSearchDirectory");
 		this.outputFile = getOption(options, "outputFile", outputFile);
 	}
 
@@ -117,12 +119,20 @@ public class Configuration {
 		this.appendModules = appendModules;
 	}
 
-	public List<String> getModuleDirectories() {
-		return moduleDirectories;
+	public List<String> getModuleSearchDirectories() {
+		return moduleSearchDirectories;
 	}
 
-	public void setModuleDirectories(List<String> moduleDirectories) {
-		this.moduleDirectories = moduleDirectories;
+	public void setModuleSearchDirectories(List<String> moduleSearchDirectories) {
+		this.moduleSearchDirectories = moduleSearchDirectories;
+	}
+
+	public String getRelativeTo() {
+		return relativeTo;
+	}
+
+	public void setRelativeTo(String relativeTo) {
+		this.relativeTo = relativeTo;
 	}
 
 	public String getOutputFile() {

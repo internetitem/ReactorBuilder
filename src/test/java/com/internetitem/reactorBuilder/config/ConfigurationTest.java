@@ -44,7 +44,8 @@ public class ConfigurationTest {
 		options.addValue("packaging", "pkg");
 		options.addValue("prependModule", "pm");
 		options.addValue("appendModule", "am");
-		options.addValue("moduleDirectory", "md");
+		options.addValue("moduleSearchDirectory", "md");
+		options.addValue("relativeTo", "rt");
 		options.addValue("outputFile", "of");
 		Configuration config = new Configuration(options);
 
@@ -65,11 +66,12 @@ public class ConfigurationTest {
 		assertEquals(1, appendModules.size());
 		assertEquals("am", appendModules.get(0));
 
-		List<String> moduleDirectories = config.getModuleDirectories();
+		List<String> moduleDirectories = config.getModuleSearchDirectories();
 		assertNotNull(moduleDirectories);
 		assertEquals(1, moduleDirectories.size());
 		assertEquals("md", moduleDirectories.get(0));
 
+		assertEquals("rt", config.getRelativeTo());
 		assertEquals("of", config.getOutputFile());
 	}
 
@@ -85,9 +87,9 @@ public class ConfigurationTest {
 		options.addValue("appendModule", "am1");
 		options.addValue("appendModule", "am2");
 		options.addValue("appendModule", "am3");
-		options.addValue("moduleDirectory", "md1");
-		options.addValue("moduleDirectory", "md2");
-		options.addValue("moduleDirectory", "md3");
+		options.addValue("moduleSearchDirectory", "md1");
+		options.addValue("moduleSearchDirectory", "md2");
+		options.addValue("moduleSearchDirectory", "md3");
 		Configuration config = new Configuration(options);
 
 		List<String> prependModules = config.getPrependModules();
@@ -104,7 +106,7 @@ public class ConfigurationTest {
 		assertEquals("am2", appendModules.get(1));
 		assertEquals("am3", appendModules.get(2));
 
-		List<String> moduleDirectories = config.getModuleDirectories();
+		List<String> moduleDirectories = config.getModuleSearchDirectories();
 		assertNotNull(moduleDirectories);
 		assertEquals(3, moduleDirectories.size());
 		assertEquals("md1", moduleDirectories.get(0));

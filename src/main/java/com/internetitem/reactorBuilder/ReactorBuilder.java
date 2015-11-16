@@ -7,6 +7,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,15 +131,49 @@ public class ReactorBuilder {
 	}
 
 	List<String> getModules(Configuration config) throws IOException {
-		List<String> moduleDirectories = config.getModuleDirectories();
+		List<String> rawModuleDirectories = getModuleSearchDirectories(config);
+		Path relativeTo = getRelativeToPath(config);
+
 		List<String> allModules = new ArrayList<>();
-		if (moduleDirectories == null || moduleDirectories.isEmpty()) {
-			return lister.listModules(".");
-		}
-		for (String moduleDirectory : moduleDirectories) {
-			allModules.addAll(lister.listModules(moduleDirectory));
+		for (String moduleDirectory : rawModuleDirectories) {
+			for (String directory : lister.listModules(moduleDirectory)) {
+				allModules.add(relativizePath(relativeTo, directory));
+			}
 		}
 		return allModules;
+	}
+
+	public static Path getRelativeToPath(Configuration config) {
+		String relativeToString = config.getRelativeTo();
+		if (relativeToString != null) {
+			return getAbsolutePath(relativeToString);
+		}
+		return null;
+	}
+
+	public static Path getAbsolutePath(String name) {
+		return Paths.get(name).toAbsolutePath();
+	}
+
+	public static String relativizePath(Path relativeTo, String filename) {
+		if (relativeTo == null) {
+			return filename;
+		}
+
+		Path path = getAbsolutePath(filename);
+		if (path.startsWith(relativeTo)) {
+			return relativeTo.relativize(path).toString();
+		} else {
+			return path.toString();
+		}
+	}
+
+	public static List<String> getModuleSearchDirectories(Configuration config) {
+		List<String> moduleDirectories = new ArrayList<>(config.getModuleSearchDirectories());
+		if (moduleDirectories.isEmpty()) {
+			moduleDirectories.add(".");
+		}
+		return moduleDirectories;
 	}
 
 }
