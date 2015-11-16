@@ -24,6 +24,8 @@
 
     <modules>
         <module>create-reactor-core</module>
+        <module>create-reactor-project-maven-plugin</module>
+        <module>reactor-tester</module>
     </modules>
 
 </project>
