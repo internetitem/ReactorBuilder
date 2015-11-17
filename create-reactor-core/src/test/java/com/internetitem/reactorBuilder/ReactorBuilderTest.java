@@ -33,7 +33,7 @@ public class ReactorBuilderTest {
 		config.setGroupId("my groupId");
 		config.setPackaging("my packaging");
 		config.setTemplateFile("/dir/pom.xml");
-		String xml = builder.loadResource("/test-pom.xml");
+		String xml = FileUtility.loadResource("/test-pom.xml");
 		mockInputter.addData("/dir/pom.xml", xml);
 		mockLister.addDirectory(".", "module1", "module2");
 		config.setOutputFile("/out/pom.xml");
@@ -41,7 +41,7 @@ public class ReactorBuilderTest {
 		builder.buildReactorProject(config);
 		String output = mockOutputter.getData("/out/pom.xml");
 		assertNotNull(output);
-		Document doc = builder.parseXml(output);
+		Document doc = XmlUtility.documentFromXml(output);
 		Element root = doc.getRootElement();
 		assertNotNull(root);
 
@@ -72,7 +72,7 @@ public class ReactorBuilderTest {
 		config.setGroupId("my groupId");
 		config.setPackaging("my packaging");
 		config.setTemplateFile("/dir/pom.xml");
-		String xml = builder.loadResource("/test-pom.xml");
+		String xml = FileUtility.loadResource("/test-pom.xml");
 		mockInputter.addData("/dir/pom.xml", xml);
 
 		config.setRelativeTo("/path1");
@@ -90,7 +90,7 @@ public class ReactorBuilderTest {
 		builder.buildReactorProject(config);
 		String output = mockOutputter.getData("/out/pom.xml");
 		assertNotNull(output);
-		Document doc = builder.parseXml(output);
+		Document doc = XmlUtility.documentFromXml(output);
 		Element root = doc.getRootElement();
 		assertNotNull(root);
 
@@ -110,11 +110,6 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testTransformBareDocument() throws Exception {
-		MockInputter mockInputter = new MockInputter();
-		MockOutputter mockOutputter = new MockOutputter();
-		MockModuleLister mockLister = new MockModuleLister();
-		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
-
 		List<String> modules = new ArrayList<>();
 		modules.add("module1");
 		modules.add("module2");
@@ -129,7 +124,7 @@ public class ReactorBuilderTest {
 		Element root = new Element("pomroot", TEST_NAMESPACE);
 		Document doc = new Document(root);
 
-		builder.transformDocument(modules, config, doc);
+		PomFile.transformPom(modules, config, doc);
 
 		assertElementText("v1.0.0", root.getFirstChildElement("version", TEST_NAMESPACE));
 		assertElementText("my artifact", root.getFirstChildElement("artifactId", TEST_NAMESPACE));
@@ -139,11 +134,6 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testTransformExistingDocument() throws Exception {
-		MockInputter mockInputter = new MockInputter();
-		MockOutputter mockOutputter = new MockOutputter();
-		MockModuleLister mockLister = new MockModuleLister();
-		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
-
 		List<String> modules = new ArrayList<>();
 		modules.add("module1");
 		modules.add("module2");
@@ -154,10 +144,10 @@ public class ReactorBuilderTest {
 		config.setGroupId("my groupId");
 		config.setPackaging("my packaging");
 
-		String xml = builder.loadResource("/test-pom.xml");
-		Document doc = builder.parseXml(xml);
+		String xml = FileUtility.loadResource("/test-pom.xml");
+		Document doc = XmlUtility.documentFromXml(xml);
 
-		builder.transformDocument(modules, config, doc);
+		PomFile.transformPom(modules, config, doc);
 
 		Element root = doc.getRootElement();
 
@@ -171,10 +161,6 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testAppendModulesExistingElement() throws Exception {
-		MockInputter mockInputter = new MockInputter();
-		MockOutputter mockOutputter = new MockOutputter();
-		MockModuleLister mockLister = new MockModuleLister();
-		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
 		Element root = new Element("root", TEST_NAMESPACE);
 		Element modulesElement = new Element("modules", TEST_NAMESPACE);
 		root.appendChild(modulesElement);
@@ -182,7 +168,7 @@ public class ReactorBuilderTest {
 		List<String> modules = new ArrayList<>();
 		modules.add("module1");
 		modules.add("module2");
-		builder.appendModules(root, TEST_NAMESPACE, modules);
+		PomFile.appendModules(root, TEST_NAMESPACE, modules);
 
 		Elements modulesElements = modulesElement.getChildElements("module", TEST_NAMESPACE);
 		assertNotNull(modulesElements);
@@ -193,16 +179,12 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testAppendModulesNewElement() throws Exception {
-		MockInputter mockInputter = new MockInputter();
-		MockOutputter mockOutputter = new MockOutputter();
-		MockModuleLister mockLister = new MockModuleLister();
-		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
 		Element root = new Element("root", TEST_NAMESPACE);
 
 		List<String> modules = new ArrayList<>();
 		modules.add("module1");
 		modules.add("module2");
-		builder.appendModules(root, TEST_NAMESPACE, modules);
+		PomFile.appendModules(root, TEST_NAMESPACE, modules);
 
 		Element modulesElement = root.getFirstChildElement("modules", TEST_NAMESPACE);
 		assertNotNull(modulesElement);
@@ -215,12 +197,8 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testAddNewElement() throws Exception {
-		MockInputter mockInputter = new MockInputter();
-		MockOutputter mockOutputter = new MockOutputter();
-		MockModuleLister mockLister = new MockModuleLister();
-		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
 		Element e = new Element("root", TEST_NAMESPACE);
-		builder.maybeAddElement(e, TEST_NAMESPACE, "key", "val");
+		PomFile.maybeAddElement(e, TEST_NAMESPACE, "key", "val");
 		Element child = e.getFirstChildElement("key", TEST_NAMESPACE);
 		assertNotNull(child);
 		assertEquals("val", child.getValue());
@@ -228,27 +206,19 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testDontAddNewElement() throws Exception {
-		MockInputter mockInputter = new MockInputter();
-		MockOutputter mockOutputter = new MockOutputter();
-		MockModuleLister mockLister = new MockModuleLister();
-		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
 		Element e = new Element("root", TEST_NAMESPACE);
-		builder.maybeAddElement(e, TEST_NAMESPACE, "key", null);
+		PomFile.maybeAddElement(e, TEST_NAMESPACE, "key", null);
 		Element child = e.getFirstChildElement("key", TEST_NAMESPACE);
 		assertNull(child);
 	}
 
 	@Test
 	public void testEditElement() throws Exception {
-		MockInputter mockInputter = new MockInputter();
-		MockOutputter mockOutputter = new MockOutputter();
-		MockModuleLister mockLister = new MockModuleLister();
-		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
 		Element e = new Element("root", TEST_NAMESPACE);
 		Element c = new Element("key", TEST_NAMESPACE);
 		c.appendChild("yes");
 		e.appendChild(c);
-		builder.maybeAddElement(e, TEST_NAMESPACE, "key", "val");
+		PomFile.maybeAddElement(e, TEST_NAMESPACE, "key", "val");
 		Elements es = e.getChildElements("key", TEST_NAMESPACE);
 		assertEquals(1, es.size());
 		Element child = es.get(0);
@@ -276,16 +246,12 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testFormatXml() throws Exception {
-		MockInputter mockInputter = new MockInputter();
-		MockOutputter mockOutputter = new MockOutputter();
-		MockModuleLister mockLister = new MockModuleLister();
-		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
 		Element root = new Element("parent");
 		Element child = new Element("child");
 		child.appendChild("value");
 		root.appendChild(child);
 		Document doc = new Document(root);
-		String xml = builder.formatXml(doc);
+		String xml = XmlUtility.xmlFromDocument(doc);
 		assertTrue(xml.contains("    "));
 	}
 
@@ -307,11 +273,7 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testParseXml() throws Exception {
-		MockInputter mockInputter = new MockInputter();
-		MockOutputter mockOutputter = new MockOutputter();
-		MockModuleLister mockLister = new MockModuleLister();
-		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
-		Document document = builder.parseXml("<parent><child>value</child></parent>");
+		Document document = XmlUtility.documentFromXml("<parent><child>value</child></parent>");
 		assertNotNull(document);
 		Element root = document.getRootElement();
 		assertNotNull(root);
