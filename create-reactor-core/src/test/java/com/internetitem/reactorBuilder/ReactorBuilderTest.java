@@ -9,7 +9,6 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import org.junit.Test;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,7 +103,7 @@ public class ReactorBuilderTest {
 		assertNotNull(modulesElement);
 
 		Elements es = modulesElement.getChildElements("module", xmlns);
-		assertElementsText(es, "module1", "module2", ReactorBuilder.getAbsolutePath("/path2/module3").toString(), ReactorBuilder.getAbsolutePath("/path2/module4").toString());
+		assertElementsText(es, "module1", "module2", PathUtility.getAbsolutePath("/path2/module3").toString(), PathUtility.getAbsolutePath("/path2/module4").toString());
 	}
 
 
@@ -222,21 +221,6 @@ public class ReactorBuilderTest {
 		assertNotNull(moduleDirectories);
 		assertEquals(1, moduleDirectories.size());
 		assertEquals(".", moduleDirectories.get(0));
-	}
-
-	@Test
-	public void testRelativePath() throws Exception {
-		Path relativeTo = ReactorBuilder.getAbsolutePath("/file1");
-		String relativePath = ReactorBuilder.relativizePath(relativeTo, "/file1/file2");
-		assertEquals("file2", relativePath);
-	}
-
-	@Test
-	public void testDontRelativePath() throws Exception {
-		Path relativeTo = ReactorBuilder.getAbsolutePath("/file1");
-		String relativePath = ReactorBuilder.relativizePath(relativeTo, "/file3/file2");
-		Path actualPath = ReactorBuilder.getAbsolutePath("/file3/file2");
-		assertEquals(actualPath.toString(), relativePath.toString());
 	}
 
 }
