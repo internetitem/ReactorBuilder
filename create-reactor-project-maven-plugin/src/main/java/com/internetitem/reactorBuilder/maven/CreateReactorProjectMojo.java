@@ -11,8 +11,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+
 
 @Mojo(name = "create-reactor-project", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = true, requiresProject = false)
 public class CreateReactorProjectMojo extends AbstractMojo {
@@ -68,7 +68,7 @@ public class CreateReactorProjectMojo extends AbstractMojo {
 	}
 
 	private Configuration buildReactorConfiguration() {
-		Configuration config = new Configuration();
+		Configuration config = new Configuration(new MavenLogWrapper(getLog()));
 
 		if (xmlns != null) {
 			config.setXmlns(xmlns);
@@ -106,6 +106,8 @@ public class CreateReactorProjectMojo extends AbstractMojo {
 		if (outputFile != null) {
 			config.setOutputFile(outputFile);
 		}
+
+		config.summarizeConfiguration();
 
 		return config;
 	}

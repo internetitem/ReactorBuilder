@@ -12,6 +12,7 @@ import java.util.List;
 import static com.internetitem.reactorBuilder.XmlTestUtility.assertElementText;
 import static com.internetitem.reactorBuilder.XmlTestUtility.assertElementsText;
 import static org.junit.Assert.*;
+import static com.internetitem.reactorBuilder.config.TestUtility.emptyConfiguration;
 
 public class PomFileTest {
 
@@ -92,7 +93,7 @@ public class PomFileTest {
 		modules.add("module1");
 		modules.add("module2");
 
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		config.setVersion("v1.0.0");
 		config.setArtifactId("my artifact");
 		config.setGroupId("my groupId");
@@ -116,7 +117,7 @@ public class PomFileTest {
 		modules.add("module1");
 		modules.add("module2");
 
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		config.setVersion("v1.0.0");
 		config.setArtifactId("my artifact");
 		config.setGroupId("my groupId");

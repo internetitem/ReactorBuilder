@@ -1,6 +1,7 @@
 package com.internetitem.reactorBuilder;
 
 import com.internetitem.reactorBuilder.config.Configuration;
+import com.internetitem.reactorBuilder.config.TestUtility;
 import com.internetitem.reactorBuilder.config.mocks.MockInputter;
 import com.internetitem.reactorBuilder.config.mocks.MockModuleLister;
 import com.internetitem.reactorBuilder.config.mocks.MockOutputter;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static com.internetitem.reactorBuilder.XmlTestUtility.assertElementText;
 import static com.internetitem.reactorBuilder.XmlTestUtility.assertElementsText;
+import static com.internetitem.reactorBuilder.config.TestUtility.emptyConfiguration;
 import static org.junit.Assert.*;
 
 public class ReactorBuilderTest {
@@ -25,7 +27,7 @@ public class ReactorBuilderTest {
 		MockModuleLister mockLister = new MockModuleLister();
 		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
 
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		config.setVersion("v1.0.0");
 		config.setArtifactId("my artifact");
 		config.setGroupId("my groupId");
@@ -64,7 +66,7 @@ public class ReactorBuilderTest {
 		MockModuleLister mockLister = new MockModuleLister();
 		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
 
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		config.setVersion("v1.0.0");
 		config.setArtifactId("my artifact");
 		config.setGroupId("my groupId");
@@ -113,7 +115,7 @@ public class ReactorBuilderTest {
 		MockOutputter mockOutputter = new MockOutputter();
 		MockModuleLister mockLister = new MockModuleLister();
 		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		config.setOutputFile("outPom.xml");
 		Element root = new Element("parent");
 		Element child = new Element("child");
@@ -132,7 +134,7 @@ public class ReactorBuilderTest {
 		MockOutputter mockOutputter = new MockOutputter();
 		MockModuleLister mockLister = new MockModuleLister();
 		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		config.setTemplateFile("pom.xml");
 		Document document = builder.loadPom(config);
 		assertNotNull(document);
@@ -147,7 +149,7 @@ public class ReactorBuilderTest {
 		MockOutputter mockOutputter = new MockOutputter();
 		MockModuleLister mockLister = new MockModuleLister();
 		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
-		String defaultPom = builder.loadDefaultPom();
+		String defaultPom = builder.loadDefaultPom(emptyConfiguration());
 		assertNotNull(defaultPom);
 		assertTrue(defaultPom.contains("<"));
 	}
@@ -159,7 +161,7 @@ public class ReactorBuilderTest {
 		MockModuleLister mockLister = new MockModuleLister();
 		mockLister.addDirectory(".", "module1", "module2");
 		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		List<String> modules = builder.getModules(config);
 		assertNotNull(modules);
 		assertEquals(2, modules.size());
@@ -175,7 +177,7 @@ public class ReactorBuilderTest {
 		mockLister.addDirectory("dir1", "module1", "module2");
 		mockLister.addDirectory("dir2", "module3", "module4");
 		ReactorBuilder builder = new ReactorBuilder(mockInputter, mockOutputter, mockLister);
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		List<String> dirs = new ArrayList<>();
 		dirs.add("dir1");
 		dirs.add("dir2");
@@ -191,7 +193,7 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testGetModuleSearchDirectories() throws Exception {
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		List<String> dirs = new ArrayList<>();
 		dirs.add("dir1");
 		dirs.add("dir2");
@@ -205,7 +207,7 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testGetModuleSearchNoDirectories() throws Exception {
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		List<String> moduleDirectories = ReactorBuilder.getModuleSearchDirectories(config);
 		assertNotNull(moduleDirectories);
 		assertEquals(1, moduleDirectories.size());
@@ -214,7 +216,7 @@ public class ReactorBuilderTest {
 
 	@Test
 	public void testGetModuleSearchEmptyDirectories() throws Exception {
-		Configuration config = new Configuration();
+		Configuration config = emptyConfiguration();
 		List<String> dirs = new ArrayList<>();
 		config.setModuleSearchDirectories(dirs);
 		List<String> moduleDirectories = ReactorBuilder.getModuleSearchDirectories(config);
@@ -222,5 +224,6 @@ public class ReactorBuilderTest {
 		assertEquals(1, moduleDirectories.size());
 		assertEquals(".", moduleDirectories.get(0));
 	}
+
 
 }

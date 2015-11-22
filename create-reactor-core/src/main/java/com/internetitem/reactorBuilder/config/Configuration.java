@@ -1,5 +1,8 @@
 package com.internetitem.reactorBuilder.config;
 
+import com.internetitem.reactorBuilder.LogWrapper;
+import com.internetitem.reactorBuilder.StringUtility;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -22,10 +25,15 @@ public class Configuration {
 
 	private String outputFile;
 
-	public Configuration() {
+	private LogWrapper logWrapper;
+
+	public Configuration(LogWrapper logWrapper) {
+		this.logWrapper = logWrapper;
 	}
 
-	public Configuration(KeyedOptions options) {
+	public Configuration(LogWrapper logWrapper, KeyedOptions options) {
+		this.logWrapper = logWrapper;
+
 		this.xmlns = getOption(options, "xmlns", xmlns);
 		this.templateFile = getOption(options, "templateFile", templateFile);
 		this.groupId = getOption(options, "groupId", groupId);
@@ -141,5 +149,40 @@ public class Configuration {
 
 	public void setOutputFile(String outputFile) {
 		this.outputFile = outputFile;
+	}
+
+	public LogWrapper getLogWrapper() {
+		return logWrapper;
+	}
+
+	public void summarizeConfiguration() {
+		logWrapper.info("Reactor Builder Configuration Start");
+		maybeOutput(xmlns, "xmlns");
+		maybeOutput(templateFile, "templateFile");
+		maybeOutput(groupId, "groupId");
+		maybeOutput(artifactId, "artifactId");
+		maybeOutput(version, "version");
+		maybeOutput(packaging, "packaging");
+		maybeOutput(prependModules, "prependModules");
+		maybeOutput(appendModules, "appendModules");
+		maybeOutput(relativeTo, "relativeTo");
+		maybeOutput(moduleSearchDirectories, "moduleSearchDirectories");
+		maybeOutput(outputFile, "outputFile");
+		logWrapper.info("Reactor Builder Configuration Finish");
+	}
+
+	private void maybeOutput(String value, String name) {
+		if (value == null) {
+			return;
+		}
+		logWrapper.info(" " + name + " = " + value);
+	}
+
+	private void maybeOutput(List<String> values, String name) {
+		if (values == null || values.isEmpty()) {
+			return;
+		}
+		String valueString = StringUtility.joinValues(values, ", ");
+		logWrapper.info(" " + name + " = " + valueString);
 	}
 }

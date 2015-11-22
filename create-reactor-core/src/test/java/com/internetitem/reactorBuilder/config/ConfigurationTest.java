@@ -2,10 +2,12 @@ package com.internetitem.reactorBuilder.config;
 
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static com.internetitem.reactorBuilder.config.TestUtility.defaultLogger;
 
 public class ConfigurationTest {
 
@@ -15,7 +17,7 @@ public class ConfigurationTest {
 		options.addValue("groupId", "group");
 		options.addValue("artifactId", "test");
 		options.addValue("version", "1.0.0");
-		Configuration config = new Configuration(options);
+		Configuration config = new Configuration(defaultLogger(), options);
 
 		assertEquals("http://maven.apache.org/POM/4.0.0", config.getXmlns());
 		assertEquals("group", config.getGroupId());
@@ -47,7 +49,7 @@ public class ConfigurationTest {
 		options.addValue("moduleSearchDirectory", "md");
 		options.addValue("relativeTo", "rt");
 		options.addValue("outputFile", "of");
-		Configuration config = new Configuration(options);
+		Configuration config = new Configuration(defaultLogger(), options);
 
 		assertEquals("XML Rules!", config.getXmlns());
 		assertEquals("tf", config.getTemplateFile());
@@ -90,7 +92,7 @@ public class ConfigurationTest {
 		options.addValue("moduleSearchDirectory", "md1");
 		options.addValue("moduleSearchDirectory", "md2");
 		options.addValue("moduleSearchDirectory", "md3");
-		Configuration config = new Configuration(options);
+		Configuration config = new Configuration(defaultLogger(), options);
 
 		List<String> prependModules = config.getPrependModules();
 		assertNotNull(prependModules);
@@ -112,6 +114,25 @@ public class ConfigurationTest {
 		assertEquals("md1", moduleDirectories.get(0));
 		assertEquals("md2", moduleDirectories.get(1));
 		assertEquals("md3", moduleDirectories.get(2));
+	}
+
+	@Test
+	public void testSummarizeEmptyConfiguration() {
+		MockLogger mockLogger = new MockLogger();
+		Configuration config = new Configuration(mockLogger);
+		config.summarizeConfiguration();
+		assertEquals(4, mockLogger.getMessages().size());
+	}
+
+	@Test
+	public void testSummarizeNormalConfiguration() {
+		MockLogger mockLogger = new MockLogger();
+		Configuration config = new Configuration(mockLogger);
+		config.setRelativeTo("rt");
+		config.setModuleSearchDirectories(Collections.singletonList("searchMe"));
+		config.setOutputFile("of");
+		config.summarizeConfiguration();
+		assertEquals(7, mockLogger.getMessages().size());
 	}
 
 }

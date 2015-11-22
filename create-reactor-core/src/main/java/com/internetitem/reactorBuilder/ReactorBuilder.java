@@ -46,14 +46,15 @@ public class ReactorBuilder {
 		String pomFile = config.getTemplateFile();
 		String text;
 		if (pomFile == null) {
-			text = loadDefaultPom();
+			text = loadDefaultPom(config);
 		} else {
 			text = inputter.readInput(pomFile);
 		}
 		return XmlUtility.documentFromXml(text);
 	}
 
-	String loadDefaultPom() throws IOException {
+	String loadDefaultPom(Configuration config) throws IOException {
+		config.getLogWrapper().info("Loading default POM");
 		return FileUtility.loadResource(DEFAULT_POM);
 	}
 
@@ -64,7 +65,9 @@ public class ReactorBuilder {
 		List<String> allModules = new ArrayList<>();
 		for (String moduleDirectory : rawModuleDirectories) {
 			for (String directory : lister.listModules(moduleDirectory)) {
-				allModules.add(PathUtility.relativizePath(relativeTo, directory));
+				String relativePath = PathUtility.relativizePath(relativeTo, directory);
+				config.getLogWrapper().info("Adding module [" + relativePath + "] from path [" + directory + "]");
+				allModules.add(relativePath);
 			}
 		}
 		return allModules;

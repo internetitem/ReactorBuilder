@@ -10,6 +10,7 @@ import java.util.Properties;
 public class CommandLineRunner {
 
 	private static final String KEY_PROPERTY_FILE = "propertyFile";
+	private static final String KEY_SILENT = "silent";
 
 	private PropertiesLoader propertiesLoader;
 
@@ -21,6 +22,9 @@ public class CommandLineRunner {
 		CommandLineParser parser = new CommandLineParser();
 		KeyedOptions options = parser.parseCommandLine(args);
 
+		boolean silent = options.getBooleanValue(KEY_SILENT);
+		LogWrapper logger = new ConsoleLogWrapper(silent);
+
 		List<String> propertyFiles = options.getValues(KEY_PROPERTY_FILE);
 		if (propertyFiles != null && !propertyFiles.isEmpty()) {
 			PropertiesParser propertiesParser = new PropertiesParser(Configuration.LIST_OPTION_NAMES);
@@ -30,7 +34,7 @@ public class CommandLineRunner {
 			}
 		}
 
-		return new Configuration(options);
+		return new Configuration(logger, options);
 	}
 
 	public static void main(String[] args) throws CommandLineParsingException, IOException {
@@ -41,6 +45,7 @@ public class CommandLineRunner {
 		ModuleLister lister = new FilesystemModuleLister();
 		ReactorBuilder builder = new ReactorBuilder(inputter, outputter, lister);
 		Configuration config = runner.buildConfiguration(args);
+		config.summarizeConfiguration();
 		builder.buildReactorProject(config);
 	}
 
