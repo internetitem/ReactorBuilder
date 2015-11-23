@@ -11,6 +11,7 @@
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Programmatically build a Maven Reactor project</description>
+    <url>https://github.com/internetitem/ReactorBuilder</url>
 
     <licenses>
         <license>
