@@ -6,7 +6,7 @@
     <parent>
         <artifactId>create-reactor</artifactId>
         <groupId>com.internetitem</groupId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>create-reactor-project-maven-plugin</artifactId>
