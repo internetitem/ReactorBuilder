@@ -14,6 +14,8 @@
     <artifactId>create-reactor-project-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
+    <description>Maven Mojo for programmatically creating a Maven Reactor project</description>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -61,4 +63,5 @@
             <version>3.2</version>
         </dependency>
     </dependencies>
+
 </project>

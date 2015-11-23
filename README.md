@@ -1,7 +1,7 @@
 ReactorBuilder
 ==============
 
-Programatically build a Maven Reactor project
+Programmatically build a Maven Reactor project
 
 There are currently two "runnable" versions of this project:
 * A command-line runner which takes command line parameters
